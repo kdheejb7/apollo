@@ -113,10 +113,12 @@ bool SemanticLSTMEvaluator::Evaluate(Obstacle* obstacle_ptr,
   writeFile.open("Prediction_infer_check.txt", std::ios::app);
   if (obstacle_ptr->IsPedestrian()) {
     writeFile << "semantic_lstm_evaluator_2\n";
+    AINFO << "Semantic_lstm_evaluator_2 infer start\n";
     torch_output_tensor = torch_pedestrian_model_.forward(torch_inputs).
                           toTensor().to(torch::kCPU);
   } else {
     writeFile << "semantic_lstm_evaluator_2\n";
+    AINFO << "Semantic_lstm_evaluator_2 infer start\n";
     torch_output_tensor =
         torch_vehicle_model_.forward(torch_inputs).toTensor().to(torch::kCPU);
   }
@@ -271,10 +273,12 @@ void SemanticLSTMEvaluator::LoadModel() {
   // Run one inference to avoid very slow first inference later
   std::ofstream writeFile;
   writeFile.open("Prediction_infer_check.txt", std::ios::app);
-  writeFile << "semantic_lstm_evaluator\n";
+  writeFile << "semantic_lstm_evaluator\n"; 
+  AINFO << "Semantic_lstm_evaluator_2 infer start\n";
   torch_default_output_tensor_ =
       torch_vehicle_model_.forward(torch_inputs).toTensor().to(torch::kCPU);
-  writeFile << "semantic_lstm_evaluator\n";
+  writeFile << "semantic_lstm_evaluator\n";  
+  AINFO << "Semantic_lstm_evaluator_2 infer start\n";
   torch_default_output_tensor_ =
       torch_pedestrian_model_.forward(torch_inputs).toTensor().to(torch::kCPU);
   writeFile.close();

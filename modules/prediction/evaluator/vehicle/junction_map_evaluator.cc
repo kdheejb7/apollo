@@ -78,6 +78,10 @@ bool JunctionMapEvaluator::Evaluate(Obstacle* obstacle_ptr,
     return false;
   }
 
+  std::ofstream writeF;
+  writeF.open("Perception_junction.txt", std::ios::app);
+  writeF << "Junction Map evaluator\n";
+  writeF.close();
   // Build input features for torch
   std::vector<torch::jit::IValue> torch_inputs;
   // Process the feature_map
