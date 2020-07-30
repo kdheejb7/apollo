@@ -17,6 +17,8 @@
 #include "modules/prediction/evaluator/pedestrian/pedestrian_interaction_evaluator.h"
 
 #include <utility>
+#include <iostream>
+#include <fstream>
 
 #include "modules/common/math/vec2d.h"
 #include "modules/prediction/common/feature_output.h"
@@ -111,10 +113,13 @@ bool PedestrianInteractionEvaluator::Evaluate(
   static constexpr int kShortTermPredictionPointNum = 5;
   static constexpr int kHiddenStateUpdateCycle = 4;
 
+  std::fstream writeFile;
+  writeFile.open("Prediction_infer_check.txt", std::ios::app);
   // Step 1 Get social embedding
   torch::Tensor social_pooling = GetSocialPooling();
   std::vector<torch::jit::IValue> social_embedding_inputs;
   social_embedding_inputs.push_back(std::move(social_pooling.to(device_)));
+  writeFile << "pedestrian_interaction_evaluator\n";
   torch::Tensor social_embedding =
       torch_social_embedding_.forward(social_embedding_inputs)
           .toTensor()
@@ -137,6 +142,7 @@ bool PedestrianInteractionEvaluator::Evaluate(
   torch_position[0][1] = rel_y;
   std::vector<torch::jit::IValue> position_embedding_inputs;
   position_embedding_inputs.push_back(std::move(torch_position.to(device_)));
+  writeFile << "pedestrian_interaction_evaluator2\n";
   torch::Tensor position_embedding =
       torch_position_embedding_.forward(position_embedding_inputs)
           .toTensor()
@@ -168,6 +174,7 @@ bool PedestrianInteractionEvaluator::Evaluate(
 
     std::vector<torch::jit::IValue> lstm_inputs;
     lstm_inputs.push_back(std::move(lstm_input.to(device_)));
+    writeFile << "pedestrian_interaction_evaluator3\n";
     auto lstm_out_tuple = torch_single_lstm_.forward(lstm_inputs).toTuple();
     auto ht = lstm_out_tuple->elements()[0].toTensor();
     auto ct = lstm_out_tuple->elements()[1].toTensor();
@@ -205,7 +212,8 @@ bool PedestrianInteractionEvaluator::Evaluate(
     torch_position[0][0] = curr_rel_x;
     torch_position[0][1] = curr_rel_y;
     std::vector<torch::jit::IValue> position_embedding_inputs;
-    position_embedding_inputs.push_back(std::move(torch_position.to(device_)));
+    position_embedding_inputs.push_back(std::move(torch_position.to(device_)));   
+    writeFile << "pedestrian_interaction_evaluator4\n";
     torch::Tensor position_embedding =
         torch_position_embedding_.forward(position_embedding_inputs)
             .toTensor()
@@ -225,11 +233,13 @@ bool PedestrianInteractionEvaluator::Evaluate(
     }
     std::vector<torch::jit::IValue> lstm_inputs;
     lstm_inputs.push_back(std::move(lstm_input.to(device_)));
+    writeFile << "pedestrian_interaction_evalator5\n";
     auto lstm_out_tuple = torch_single_lstm_.forward(lstm_inputs).toTuple();
     ht = lstm_out_tuple->elements()[0].toTensor();
     ct = lstm_out_tuple->elements()[1].toTensor();
     std::vector<torch::jit::IValue> prediction_inputs;
     prediction_inputs.push_back(ht[0]);
+    writeFile << "pedestrian_interaction_evalator5\n";
     auto pred_out_tensor = torch_prediction_layer_.forward(prediction_inputs)
                                .toTensor()
                                .to(torch::kCPU);

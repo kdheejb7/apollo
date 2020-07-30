@@ -18,6 +18,8 @@
 
 #include <algorithm>
 #include <utility>
+#include <iostream>
+#include <fstream>
 
 #include "absl/strings/str_cat.h"
 #include "cyber/common/log.h"
@@ -755,6 +757,10 @@ void RTNet::Infer() {
   // which will overwrite the `inference` results.
   // `out_blob->gpu_data()` will set HEAD to SYNCED,
   // then no copy happends after `enqueue`.
+  std::ofstream writeFile;
+  writeFile.open("inference_check.txt", std::ios::app);
+  writeFile << "RTNet inference\n";
+  writeFile.close();
   for (auto name : output_names_) {
     auto blob = get_blob(name);
     if (blob != nullptr) {

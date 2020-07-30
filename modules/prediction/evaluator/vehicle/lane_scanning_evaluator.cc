@@ -17,6 +17,8 @@
 #include "modules/prediction/evaluator/vehicle/lane_scanning_evaluator.h"
 
 #include <omp.h>
+#include <fstream>
+#include <iostream>
 
 #include <algorithm>
 #include <utility>
@@ -110,6 +112,10 @@ bool LaneScanningEvaluator::Evaluate(Obstacle* obstacle_ptr,
     torch_input[0][i] = static_cast<float>(feature_values[i]);
   }
   torch_inputs.push_back(std::move(torch_input));
+  std::ofstream writeFile;
+  writeFile.open("Prediction_infer_check.txt", std::ios::app);
+  writeFile << "lane_scanning_evaluator\n";
+  writeFile.close();
   ModelInference(torch_inputs, torch_lane_scanning_model_, latest_feature_ptr);
   return true;
 }

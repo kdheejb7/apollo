@@ -19,6 +19,8 @@
 
 #include <limits>
 #include <utility>
+#include <iostream>
+#include <fstream>
 
 #include "cyber/common/file.h"
 #include "modules/prediction/common/feature_output.h"
@@ -128,11 +130,16 @@ bool CruiseMLPEvaluator::Evaluate(Obstacle* obstacle_ptr,
       torch_input[0][i] = static_cast<float>(feature_values[i]);
     }
     torch_inputs.push_back(std::move(torch_input.to(device_)));
+    std::ofstream writeFile;
+    writeFile.open("Predction_infer_check.txt", std::ios::app);
     if (lane_sequence_ptr->vehicle_on_lane()) {
+      writeFile << "cruise_mlp_evaluator\n";
       ModelInference(torch_inputs, torch_go_model_, lane_sequence_ptr);
     } else {
+      writeFile << "cruise_mlp_evaluator_Else\n";
       ModelInference(torch_inputs, torch_cutin_model_, lane_sequence_ptr);
     }
+    writeFile.close();
   }
   return true;
 }

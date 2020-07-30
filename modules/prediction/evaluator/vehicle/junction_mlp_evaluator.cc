@@ -15,7 +15,8 @@
  *****************************************************************************/
 
 #include "modules/prediction/evaluator/vehicle/junction_mlp_evaluator.h"
-
+#include <iostream>
+#include <fstream>
 #include <omp.h>
 
 #include <algorithm>
@@ -105,7 +106,10 @@ bool JunctionMLPEvaluator::Evaluate(Obstacle* obstacle_ptr,
   }
   torch_inputs.push_back(std::move(torch_input.to(device_)));
   std::vector<double> probability;
+  std::ofstream writeFile;
+  writeFile.open("Prediction_infer_check.txt", std::ios::app);
   if (latest_feature_ptr->junction_feature().junction_exit_size() > 1) {
+    writeFile << "junction_mlp_evaluator\n";
     at::Tensor torch_output_tensor =
         torch_model_.forward(torch_inputs).toTensor().to(torch::kCPU);
     auto torch_output = torch_output_tensor.accessor<float, 2>();
@@ -118,6 +122,7 @@ bool JunctionMLPEvaluator::Evaluate(Obstacle* obstacle_ptr,
                                            EGO_VEHICLE_FEATURE_SIZE + 8 * i]);
     }
   }
+  writeFile.close();
   for (double prob : probability) {
     latest_feature_ptr->mutable_junction_feature()
         ->add_junction_mlp_probability(prob);

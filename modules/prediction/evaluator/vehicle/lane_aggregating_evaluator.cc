@@ -18,6 +18,8 @@
 
 #include <algorithm>
 #include <utility>
+#include <fstream>
+#include <iostream>
 
 #include "modules/common/math/vec2d.h"
 #include "modules/prediction/common/feature_output.h"
@@ -93,8 +95,11 @@ bool LaneAggregatingEvaluator::Evaluate(
     obstacle_encoding_inputs_tensor[0][i] =
         static_cast<float>(obstacle_feature_values[i]);
   }
+  std::ofstream writeFile;
+  writeFile.open("Prediction_infer_check.txt", std::ios::app);
   obstacle_encoding_inputs.push_back(
       std::move(obstacle_encoding_inputs_tensor));
+  writeFile << "lane_aggregating_evaluator\n";
   torch::Tensor obstalce_encoding =
       torch_obstacle_encoding_.forward(obstacle_encoding_inputs)
           .toTensor()
@@ -126,6 +131,7 @@ bool LaneAggregatingEvaluator::Evaluate(
     }
     single_lane_encoding_inputs.push_back(
         std::move(single_lane_encoding_inputs_tensor));
+    writeFile << "lane_aggregating_evaluator2\n";
     torch::Tensor single_lane_encoding =
         torch_lane_encoding_.forward(single_lane_encoding_inputs)
             .toTensor()
@@ -161,6 +167,8 @@ bool LaneAggregatingEvaluator::Evaluate(
     // }
     prediction_layer_inputs.push_back(
         std::move(prediction_layer_inputs_tensor));
+    writeFile << "lane_aggregating_evaluator3\n";
+    writeFile.close();
     torch::Tensor prediction_layer_output =
         torch_prediction_layer_.forward(prediction_layer_inputs)
             .toTensor()

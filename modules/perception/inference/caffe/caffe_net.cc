@@ -17,6 +17,8 @@
 #include "modules/perception/inference/caffe/caffe_net.h"
 
 #include "cyber/common/log.h"
+#include <iostream>
+#include <fstream>
 
 namespace apollo {
 namespace perception {
@@ -113,6 +115,10 @@ void CaffeNet::Infer() {
   // which will overwrite the `inference` results.
   // `out_blob->gpu_data()` will set HEAD to SYNCED,
   // then no copy happends after `enqueue`.
+  std::ofstream writeFile;
+  writeFile.open("inference_check.txt", std::ios::app);
+  writeFile << "Caffe Net Inference call\n";
+  writeFile.close();
   for (auto name : output_names_) {
     auto blob = get_blob(name);
     if (blob != nullptr) {
