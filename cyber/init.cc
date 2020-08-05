@@ -84,6 +84,7 @@ void OnShutdown(int sig) {
 void ExitHandle() { Clear(); }
 
 bool Init(const char* binary_name) {
+  AINFO << binary_name << " is binary_name";
   std::lock_guard<std::mutex> lg(g_mutex);
   if (GetState() != STATE_UNINITIALIZED) {
     return false;

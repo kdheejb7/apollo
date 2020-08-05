@@ -74,6 +74,7 @@ bool FusionComponent::Proc(const std::shared_ptr<SensorFrameMessage>& message) {
         inner_writer_->Write(viz_message);
       }
     }
+    
   }
   return status;
 }
@@ -89,7 +90,7 @@ bool FusionComponent::InitAlgorithmPlugin() {
     hdmap_input_ = map::HDMapInput::Instance();
     ACHECK(hdmap_input_->Init()) << "Failed to init hdmap input.";
   }
-  AINFO << "Init algorithm successfully, onboard fusion: " << fusion_method_;
+  AINFO << "Init algorithm successfully, onboard fusion: " << fusion_method_;       //fusion_method_: ProbabilisticFusion
   return true;
 }
 

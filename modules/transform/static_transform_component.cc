@@ -29,6 +29,7 @@ bool StaticTransformComponent::Init() {
     AERROR << "Parse conf file failed, " << ConfigFilePath();
     return false;
   }
+  AINFO << "ConfigFile is " << ConfigFilePath();        //ConfigFile is /apollo/modules/transform/conf/static_transform_conf.pb.txt 
   cyber::proto::RoleAttributes attr;
   attr.set_channel_name(FLAGS_tf_static_topic);
   attr.mutable_qos_profile()->CopyFrom(
@@ -63,15 +64,17 @@ bool StaticTransformComponent::ParseFromYaml(
   YAML::Node tf = YAML::LoadFile(file_path);
   try {
     transform_stamped->mutable_header()->set_frame_id(
-        tf["header"]["frame_id"].as<std::string>());
+        tf["header"]["frame_id"].as<std::string>());    //velodyne128 
     transform_stamped->set_child_frame_id(
-        tf["child_frame_id"].as<std::string>());
+        tf["child_frame_id"].as<std::string>());        //front_6mm
+
     // translation
     auto translation =
         transform_stamped->mutable_transform()->mutable_translation();
     translation->set_x(tf["transform"]["translation"]["x"].as<double>());
     translation->set_y(tf["transform"]["translation"]["y"].as<double>());
     translation->set_z(tf["transform"]["translation"]["z"].as<double>());
+    
     // rotation
     auto rotation = transform_stamped->mutable_transform()->mutable_rotation();
     rotation->set_qx(tf["transform"]["rotation"]["x"].as<double>());

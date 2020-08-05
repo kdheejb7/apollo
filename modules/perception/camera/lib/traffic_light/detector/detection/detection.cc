@@ -221,6 +221,7 @@ bool TrafficLightDetection::Inference(
   cudaDeviceSynchronize();
   AINFO << "traffic_light_detection infer start";
   rt_net_->Infer();
+  AINFO << "traffic_light_detection infer end";
   cudaDeviceSynchronize();
   AINFO << "rt_net run success";
 

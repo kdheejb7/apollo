@@ -109,20 +109,17 @@ bool SemanticLSTMEvaluator::Evaluate(Obstacle* obstacle_ptr,
 
   auto start_time = std::chrono::system_clock::now();
   at::Tensor torch_output_tensor = torch_default_output_tensor_;
-  std::ofstream writeFile;
-  writeFile.open("Prediction_infer_check.txt", std::ios::app);
   if (obstacle_ptr->IsPedestrian()) {
-    writeFile << "semantic_lstm_evaluator_2\n";
-    AINFO << "Semantic_lstm_evaluator_2 infer start\n";
+    AINFO << "Semantic_lstm_evaluator infer start\n";
     torch_output_tensor = torch_pedestrian_model_.forward(torch_inputs).
                           toTensor().to(torch::kCPU);
+    AINFO << "Semantic_lstm_evaluator infer end\n";
   } else {
-    writeFile << "semantic_lstm_evaluator_2\n";
-    AINFO << "Semantic_lstm_evaluator_2 infer start\n";
+    AINFO << "Semantic_lstm_evaluator infer start\n";
     torch_output_tensor =
         torch_vehicle_model_.forward(torch_inputs).toTensor().to(torch::kCPU);
+    AINFO << "Semantic_lstm_evaluator infer end\n";
   }
-  writeFile.close();
 
   auto end_time = std::chrono::system_clock::now();
   std::chrono::duration<double> diff = end_time - start_time;
@@ -271,17 +268,14 @@ void SemanticLSTMEvaluator::LoadModel() {
       c10::TupleType::create(
           std::vector<c10::TypePtr>(3, c10::TensorType::create()))));
   // Run one inference to avoid very slow first inference later
-  std::ofstream writeFile;
-  writeFile.open("Prediction_infer_check.txt", std::ios::app);
-  writeFile << "semantic_lstm_evaluator\n"; 
-  AINFO << "Semantic_lstm_evaluator_2 infer start\n";
+  AINFO << "Semantic_lstm_evaluator first infer start\n";
   torch_default_output_tensor_ =
       torch_vehicle_model_.forward(torch_inputs).toTensor().to(torch::kCPU);
-  writeFile << "semantic_lstm_evaluator\n";  
-  AINFO << "Semantic_lstm_evaluator_2 infer start\n";
+  AINFO << "Semantic_lstm_evaluator first infer end\n";
+  AINFO << "Semantic_lstm_evaluator infer start\n";
   torch_default_output_tensor_ =
       torch_pedestrian_model_.forward(torch_inputs).toTensor().to(torch::kCPU);
-  writeFile.close();
+  AINFO << "Semantic_lstm_evaluator first infer end\n";
 }
 
 }  // namespace prediction

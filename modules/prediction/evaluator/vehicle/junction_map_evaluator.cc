@@ -78,10 +78,7 @@ bool JunctionMapEvaluator::Evaluate(Obstacle* obstacle_ptr,
     return false;
   }
 
-  std::ofstream writeF;
-  writeF.open("Perception_junction.txt", std::ios::app);
-  writeF << "Junction Map evaluator\n";
-  writeF.close();
+  AINFO << "Junction Map evaluator infer start\n";
   // Build input features for torch
   std::vector<torch::jit::IValue> torch_inputs;
   // Process the feature_map
@@ -107,13 +104,10 @@ bool JunctionMapEvaluator::Evaluate(Obstacle* obstacle_ptr,
           std::vector<c10::TypePtr>(2, c10::TensorType::create()))));
 
   // Compute probability
-  std::ofstream writeFile;
-  writeFile.open("Prediction_infer_check.txt", std::ios::app);
   std::vector<double> probability;
-  writeFile << "junction_map_evaluato\n";
+  AINFO << "junction_map_evaluator infer start\n";
   at::Tensor torch_output_tensor =
       torch_model_.forward(torch_inputs).toTensor().to(torch::kCPU);
-  writeFile.close();
   auto torch_output = torch_output_tensor.accessor<float, 2>();
   for (int i = 0; i < torch_output.size(1); ++i) {
     probability.push_back(static_cast<double>(torch_output[0][i]));

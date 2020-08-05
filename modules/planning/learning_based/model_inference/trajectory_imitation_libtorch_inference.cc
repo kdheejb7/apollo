@@ -522,6 +522,9 @@ bool TrajectoryImitationLibtorchInference::DoCNNLSTMMODELInference(
 
 bool TrajectoryImitationLibtorchInference::DoInference(
     LearningDataFrame* learning_data_frame) {
+  //This function is not executed.
+  AINFO << "Do Inference in TrajectoryImitationLibtorch";
+  AINFO << config_.model_type() << " is model type in torch";
   switch (config_.model_type()) {
     case LearningModelInferenceTaskConfig::CONV_RNN: {
       if (!DoCONVRNNMODELInference(learning_data_frame)) {

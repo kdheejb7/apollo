@@ -1,0 +1,8 @@
+prediction.log.INFO.20200730-225259.34276:4:I0730 22:52:59.277578 34276 semantic_lstm_evaluator.cc:277] Semantic_lstm_evaluator_2 infer start
+prediction.log.INFO.20200730-225259.34276:5:I0730 22:53:01.080595 34276 semantic_lstm_evaluator.cc:281] Semantic_lstm_evaluator_2 infer start
+prediction.log.INFO.20200730-225324.35664:16:I0730 22:53:27.957932 35664 semantic_lstm_evaluator.cc:277] Semantic_lstm_evaluator_2 infer start
+prediction.log.INFO.20200730-225324.35664:17:I0730 22:53:31.519358 35664 semantic_lstm_evaluator.cc:281] Semantic_lstm_evaluator_2 infer start
+prediction.log.INFO.20200730-225328.35110:4:I0730 22:53:28.023640 35110 semantic_lstm_evaluator.cc:277] Semantic_lstm_evaluator_2 infer start
+prediction.log.INFO.20200730-225328.35110:5:I0730 22:53:29.949537 35110 semantic_lstm_evaluator.cc:281] Semantic_lstm_evaluator_2 infer start
+prediction.log.INFO.20200730-225707.40585:4:I0730 22:57:07.887768 40585 semantic_lstm_evaluator.cc:277] Semantic_lstm_evaluator_2 infer start
+prediction.log.INFO.20200730-225707.40585:5:I0730 22:57:09.545364 40585 semantic_lstm_evaluator.cc:281] Semantic_lstm_evaluator_2 infer start

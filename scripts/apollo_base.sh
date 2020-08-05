@@ -335,10 +335,11 @@ EOF
 }
 
 function run_customized_path() {
-  local module_path=$1
-  local module=$2
-  local cmd=$3
+  local module_path=$1              #dreamview, monitor
+  local module=$2                   #dreamview, monitor
+  local cmd=$3                      #start 
   shift 3
+
   case $cmd in
     start)
       start_customized_path $module_path $module "$@"

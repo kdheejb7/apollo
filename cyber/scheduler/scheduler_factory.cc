@@ -59,6 +59,8 @@ Scheduler* Instance() {
       apollo::cyber::proto::CyberConfig cfg;
       if (PathExists(cfg_file) && GetProtoFromFile(cfg_file, &cfg)) {
         policy = cfg.scheduler_conf().policy();
+        AWARN << policy << " sched conf found, not use default conf.";
+        AINFO << policy << " sched conf found, not use default conf.";
       } else {
         AWARN << "No sched conf found, use default conf.";
       }

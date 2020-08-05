@@ -305,7 +305,7 @@ bool CNNSegmentation::Segment(const SegmentationOptions& options,
   // model inference
   AINFO << "lidar_cnn_segmentation infer start";
   inference_->Infer();
-  AINFO << "infer finish";
+  AINFO << "Lidar_cnn_segmentation infer finish";
   infer_time_ = timer.toc(true);
 
   // processing clustering

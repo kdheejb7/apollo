@@ -336,6 +336,8 @@ bool TrajectoryImitationTensorRTInference::DoCONVRNNMODELInference(
 
 bool TrajectoryImitationTensorRTInference::DoCNNMODELInference(
     LearningDataFrame* learning_data_frame) {
+  AINFO << "Do inference in TrajectoryImitationTensorRT";
+
   const int past_points_size = learning_data_frame->adc_trajectory_point_size();
   if (past_points_size == 0) {
     AERROR << "No current trajectory point status";

@@ -136,6 +136,7 @@ void ClassifyBySimple::Perform(const CameraFrame* frame,
     cudaDeviceSynchronize();
     AINFO << "traffic_light_recognition infer start";
     rt_net_->Infer();
+    AINFO << "traffic_light_recognition infer end";
     cudaDeviceSynchronize();
     AINFO << "infer finish.";
 

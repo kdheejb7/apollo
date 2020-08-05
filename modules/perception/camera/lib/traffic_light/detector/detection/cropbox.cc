@@ -29,6 +29,7 @@ void CropBox::getCropBox(const int width, const int height,
   int rows = height;
   int cols = width;
 
+  AINFO << "CropBox getCropBox";
   if (OutOfValidRegion(light->region.projection_roi, width, height) ||
       light->region.projection_roi.Area() <= 0) {
     crop_box->x = 0;
@@ -94,7 +95,7 @@ void CropBoxWholeImage::getCropBox(const int width, const int height,
     crop_box->height = height;
     return;
   }
-
+  AINFO << "Crop Box";
   crop_box->x = 0;
   crop_box->y = 0;
   crop_box->width = 0;

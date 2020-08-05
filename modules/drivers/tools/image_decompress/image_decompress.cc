@@ -31,7 +31,7 @@ bool ImageDecompressComponent::Init() {
     AERROR << "Parse config file failed: " << ConfigFilePath();
     return false;
   }
-  AINFO << "Decompress config: \n" << config_.DebugString();
+  AINFO << "Decompress config: \n" << config_.DebugString();    //channel_name : /apollo/sensor/camera/front_7mm/image
   writer_ = node_->CreateWriter<Image>(config_.channel_name());
   return true;
 }
@@ -39,6 +39,7 @@ bool ImageDecompressComponent::Init() {
 bool ImageDecompressComponent::Proc(
     const std::shared_ptr<apollo::drivers::CompressedImage>& compressed_image) {
   auto image = std::make_shared<Image>();
+  AINFO << "ImageDecompressComponent Proc";                     //about 20 calls per sec
   image->mutable_header()->CopyFrom(compressed_image->header());
   if (compressed_image->has_measurement_time()) {
     image->set_measurement_time(compressed_image->measurement_time());
@@ -48,7 +49,10 @@ bool ImageDecompressComponent::Proc(
   std::vector<uint8_t> compressed_raw_data(compressed_image->data().begin(),
                                            compressed_image->data().end());
   cv::Mat mat_image = cv::imdecode(compressed_raw_data, CV_LOAD_IMAGE_COLOR);
-  cv::cvtColor(mat_image, mat_image, CV_BGR2RGB);
+  //Mat: basic structure in opencv. Matrix structure.
+  //imdecode: read the image, similar to imread.
+
+  cv::cvtColor(mat_image, mat_image, CV_BGR2RGB);               //Input, Output, Type
   image->set_width(mat_image.cols);
   image->set_height(mat_image.rows);
   // Now olny rgb
